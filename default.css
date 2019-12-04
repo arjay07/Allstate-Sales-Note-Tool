@@ -10,6 +10,57 @@ body{
   min-width:526px;
 }
 
+.loader {
+  border: 8px solid rgb(0,0,0,0.75);
+  border-radius: 50%;
+  border-top: 8px solid #0054A6;
+  width: 56px;
+  height: 56px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -28px;
+  margin-left: -28px;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hidden{
+    display: none;
+}
+
+.splash{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    background-color: #1d1d1d;
+    color: #0054A6;
+}
+
+.splashimg{
+    height: 85px;
+}
+
+.splashh2{
+
+    margin: 0px;
+}
+
 .overlay{
   position: fixed;
   background-color: rgba(0, 0, 0, 0.8);

@@ -2,6 +2,33 @@ window.onload = onLoad;
 
 function onLoad() {
 
+    var isie = false;
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+    if (msie > 0) {
+        isie = true;
+    }
+    var trident = ua.indexOf('Trident/');
+    if (trident > 0) {
+        isie = true;
+    }
+
+    if (isie) {
+        var qs = document.getElementById("quickstart");
+        qs.classList.remove("hidden");
+        var splash = document.getElementById("splash");
+        splash.classList.add("hidden");
+    }
+
+    if(!isie){
+        setTimeout(function(){
+        animateCSS(".splash", "slideOutUp", function(){
+                var splash = document.getElementById("splash");
+                splash.classList.add("hidden");
+            })
+        }, 1450);
+    }
+
 }
 
 var selectedQuote = "auto";
@@ -85,6 +112,9 @@ function gatherInfo() {
 }
 
 function generateNote() {
+
+    animateCSS(".overlay", "fadeIn");
+
     var data = gatherInfo();
     var note = data.freeform + "\n\n";
 
@@ -160,8 +190,10 @@ function generateNote() {
 }
 
 function closePreview() {
-    var overlay = document.getElementById("overlay");
-    overlay.classList.remove("active");
+    animateCSS(".overlay", "fadeOut", function () {
+        var overlay = document.getElementById("overlay");
+        overlay.classList.remove("active");
+    });
 }
 
 function copy() {
@@ -193,4 +225,18 @@ function isDescendant(parent, child) {
         node = node.parentNode;
     }
     return false;
+}
+
+function animateCSS(element, animationName, callback) {
+    const node = document.querySelector(element)
+    node.classList.add('animated', animationName)
+
+    function handleAnimationEnd() {
+        node.classList.remove('animated', animationName)
+        node.removeEventListener('animationend', handleAnimationEnd)
+
+        if (typeof callback === 'function') callback()
+    }
+
+    node.addEventListener('animationend', handleAnimationEnd)
 }

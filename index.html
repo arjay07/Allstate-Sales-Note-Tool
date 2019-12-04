@@ -4,15 +4,16 @@
 <head>
 	<title>Allstate Sales Note Tool</title>
 	<link rel="stylesheet" href="default.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 	<script src="script.js">
 
 	</script>
 </head>
 
 <body>
-	<div class="navbar">
+	<div class="animated navbar slideInDown fast delay-2s">
 		<img src="images/logo.png" class="icon" /><span class="title">Sales Note Tool</span>
-    <img src="images/quickstart.png" class="qsicon" title="Quick Start" onclick="quickStart()"/>
+    <img src="images/quickstart.png" id="quickstart" class="qsicon hidden" title="Quick Start" onclick="quickStart()"/>
   </div>
   <div class="content">
 
@@ -875,13 +876,18 @@
       <div class="btn" onclick="resetNotes()">Reset</div>
     </div>
   </div>
-  <div id="overlay" class="overlay">
+  <div id="overlay" class="overlay faster">
     <div class="closebtn" onclick="closePreview()">&times;</div>
     <h2 class="oltitle">Preview Notes</h2>
     <textarea spellcheck="true" id="preview" class="previewnote"></textarea>
     <div class="olmenu menu">
       <div class="btn" onclick="copy()">Copy</div>
     </div>
+  </div>
+  <div id="splash" class="splash faster">
+      <img src="images/logo.png" class="splashimg"/>
+      <h2 class="splashh2">Sales Note Tool</h2>
+      <div class="loader"></div>
   </div>
 </body>
 
