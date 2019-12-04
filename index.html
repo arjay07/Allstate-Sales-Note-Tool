@@ -1,0 +1,888 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Allstate Sales Note Tool</title>
+	<link rel="stylesheet" href="default.css" />
+	<script src="script.js">
+
+	</script>
+</head>
+
+<body>
+	<div class="navbar">
+		<img src="images/logo.png" class="icon" /><span class="title">Sales Note Tool</span>
+    <img src="images/quickstart.png" class="qsicon" title="Quick Start" onclick="quickStart()"/>
+  </div>
+  <div class="content">
+
+    <div id="customerinfo">
+      <table>
+        <tr>
+          <td>Name:</td>
+          <td><input id="customername" type="text" /></td>
+          <td><label><input id="permission" type="checkbox" /> Permission to call back</label></td>
+        </tr>
+        <tr>
+          <td>Phone #:</td>
+          <td><input id="customernumber" type="text" /></td>
+          <td>Agent #: <input id="agent" type="text"/></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td><label><input id="authenticate" type="checkbox" /> Authenticate</label></td>
+          <td><label><input id="verify" type="checkbox" /> Verify</label></td>
+          <td>FACTA</td>
+          <td>
+            <select id="facta">
+            <option value="">--</option>
+            <option value="accept">Accepted</option>
+            <option value="declined">Declined</option>
+          </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="quoteselect">
+      <span class="required">Quote: </span>
+      <select id="quotes" onchange="selectquote();">
+    <option value="auto">Auto</option>
+    <option value="motorcycle">Motorcycle</option>
+    <option value="orv">ORV</option>
+    <option value="boat">Boat</option>
+    <option value="renters">Renters</option>
+    <option value="homeowners">Homeowners</option>
+        <option value="condo">Condo</option>
+  </select>
+    </div>
+
+    <div class="note active" id="auto">
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td>Declared Prior</td>
+          <td>
+            <select id="declaredprior">
+            <option value="">--</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>No Need?</td>
+          <td>
+            <select id="noneed">
+            <option value="">--</option>
+            <option value="Did not own">Did Not Own</option>
+            <option value="Military">Military</option>
+            <option value="Other">Other</option>
+            </select>
+          </td>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td># of Vehicles</td>
+          <td><input id="vehicles" type="number"></td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+          <td>Bodily Injury</td>
+          <td><input id="bilimits" type="text" placeholder="100/300" /></td>
+        </tr>
+        <tr>
+          <td>Property Damage</td>
+          <td><input id="pdlimits" type="text" placeholder="100" /></td>
+        </tr>
+        <tr>
+          <td>Collision</td>
+          <td><input id="collision" type="number" placeholder="Deductible" /></td>
+        </tr>
+        <tr>
+          <td>Comprehensive</td>
+          <td><input id="comprehensive" type="number" placeholder="Deductible" /></td>
+          <td>Carco</td>
+          <td>
+            <select id="carco">
+              <option value="">--</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select id="informedoftdocs">
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="note" id="motorcycle">
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td>Declared Prior</td>
+          <td>
+            <select id="declaredprior">
+            <option value="">--</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>No Need?</td>
+          <td>
+            <select id="noneed">
+            <option value="">--</option>
+            <option value="Did not own">Did Not Own</option>
+            <option value="Military">Military</option>
+            <option value="Other">Other</option>
+          </select>
+          </td>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td># of Vehicles</td>
+          <td><input id="vehicles" type="number"></td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+          <td>Bodily Injury</td>
+          <td><input id="bilimits" type="text" placeholder="100/300" /></td>
+        </tr>
+        <tr>
+          <td>Property Damage</td>
+          <td><input id="pdlimits" type="text" placeholder="100" /></td>
+        </tr>
+        <tr>
+          <td>Physical Damage</td>
+          <td><input id="collision" type="text" placeholder="Collision Deductible" /> <input id="comprehensive" type="text" placeholder="Comprehensive Deductible" /></td>
+        </tr>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select id="informedoftdocs">
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="note" id="orv">
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td>Declared Prior</td>
+          <td>
+            <select id="declaredprior">
+            <option value="">--</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>No Need?</td>
+          <td>
+            <select id="noneed">
+            <option value="">--</option>
+            <option value="Did not own">Did Not Own</option>
+            <option value="Military">Military</option>
+            <option value="Other">Other</option>
+          </select>
+          </td>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td># of Vehicles</td>
+          <td><input id="vehicles" type="number"></td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+          <td>Bodily Injury</td>
+          <td><input id="bilimits" type="text" placeholder="100/300" /></td>
+        </tr>
+        <tr>
+          <td>Property Damage</td>
+          <td><input id="pdlimits" type="text" placeholder="100" /></td>
+        </tr>
+        <tr>
+          <td>Physical Damage</td>
+          <td><input id="collision" type="text" placeholder="Collision Deductible" /> <input id="comprehensive" type="text" placeholder="Comprehensive Deductible" /></td>
+        </tr>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select id="informedoftdocs">
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="note" id="boat">
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td>Declared Prior</td>
+          <td>
+            <select id="declaredprior">
+            <option value="">--</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>No Need?</td>
+          <td>
+            <select id="noneed">
+            <option value="">--</option>
+            <option value="Did not own">Did Not Own</option>
+            <option value="Military">Military</option>
+            <option value="Other">Other</option>
+          </select>
+          </td>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td># of Vehicles</td>
+          <td><input id="vehicles" type="number"></td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+          <td>Watercraft Liability</td>
+          <td><input id="watercraftliability" type="text" /></td>
+        </tr>
+        <tr>
+          <td>Property Damage</td>
+          <td><input id="pdlimits" type="text" placeholder="100" /></td>
+        </tr>
+        <tr>
+          <td>Physical Damage</td>
+          <td><input id="collision" type="text" placeholder="Collision Deductible" /> <input id="comprehensive" type="text" placeholder="Comprehensive Deductible" /></td>
+        </tr>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select id="informedoftdocs">
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="note" id="renters">
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td>Closing Date</td>
+          <td><input id="closingdate" type="date" value="2019-01-01"></td>
+        </tr>
+        <tr>
+          <td>No Prior?</td>
+          <td>
+            <select id="noneed">
+            <option value="">--</option>
+            <option value="Did not own">Did Not Own</option>
+          </select>
+          </td>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select id="informedoftdocs">
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="note" id="homeowners">
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td>Closing Date</td>
+          <td><input id="closingdate" type="date" value="2019-01-01"></td>
+        </tr>
+        <tr>
+          <td>No Prior?</td>
+          <td>
+            <select id="noneed">
+            <option value="">--</option>
+            <option value="Did not own">Did Not Own</option>
+          </select>
+          </td>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select>
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="note" id="condo">
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td>Closing Date</td>
+          <td><input id="closingdate" type="date" value="2019-01-01"></td>
+        </tr>
+        <tr>
+          <td>No Prior?</td>
+          <td>
+            <select id="noneed">
+            <option value="">--</option>
+            <option value="Did not own">Did Not Own</option>
+          </select>
+          </td>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select id="informedoftdocs">
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="freeform">
+      <textarea id="freeform" placeholder="Notes..."></textarea>
+    </div>
+    <div class="menu">
+      <div class="btn" onclick="generateNote()">Generate</div>
+      <div class="btn" onclick="resetNotes()">Reset</div>
+    </div>
+  </div>
+  <div id="overlay" class="overlay">
+    <div class="closebtn" onclick="closePreview()">&times;</div>
+    <h2 class="oltitle">Preview Notes</h2>
+    <textarea spellcheck="true" id="preview" class="previewnote"></textarea>
+    <div class="olmenu menu">
+      <div class="btn" onclick="copy()">Copy</div>
+    </div>
+  </div>
+</body>
+
+</html>

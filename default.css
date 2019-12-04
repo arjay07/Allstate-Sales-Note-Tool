@@ -1,0 +1,143 @@
+html, body{
+  font-family: Arial, sans-serif;
+  font-size: 10pt;
+  margin: 0;
+  padding: 0;
+  background: #e5e5e5;
+}
+
+body{
+  min-width:526px;
+}
+
+.overlay{
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.8);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  display: none;
+}
+
+.closebtn{
+  float: right;
+  padding: 10px;
+  font-size: 50px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.oltitle{
+  margin-top: 70px;
+  color: #e5e5e5;
+}
+
+.previewnote{
+  width: 85%;
+  height: 65%;
+  resize: none;
+  overflow: auto;
+}
+
+.olmenu{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.required{
+  font-weight: bold;
+  color: #00a32e;
+}
+
+.navbar{
+  width: 100%;
+  height: 65px;
+  background-color: #1d1d1d;
+  vertical-align: middle;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 0px 0px 4px black;
+}
+
+.icon{
+  height: 65px;
+  float: left;
+}
+
+.qsicon{
+  height: 45px;
+  float: right;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.title{
+  font-weight: bold;
+  font-size: 13pt;
+  display: inline-block;
+  height: 65px;
+  line-height: 65px;
+  color: #0054A6;
+}
+
+.content{
+  margin-top: 65px;
+}
+
+#customerinfo{
+  padding: 10px;
+  background-color: #e5e5e5;
+}
+
+.quoteselect{
+  padding: 10px;
+  background-color: #d4d4d4;
+}
+
+.note{
+  padding: 10px;
+  background: #e5e5e5;
+  display: none;
+}
+
+.active{
+  display: block;
+}
+
+#freeform{
+  display: block;
+  width: 85%;
+  height: 200px;
+  padding: 2px;
+  margin: 10px;
+}
+
+.menu{
+  padding: 5px;
+  margin: auto;
+  background-color: #d4d4d4;
+}
+
+.btn{
+  display: inline-block;
+  padding: 15px;
+  margin: 5px;
+  background-color: #0054A6;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+
+.btn:hover{
+  background-color: #004395;
+}
+
+textarea{
+  font-family: Arial, sans-serif;
+}
