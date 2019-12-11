@@ -1,5 +1,5 @@
 html, body{
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 10pt;
   margin: 0;
   padding: 0;
@@ -7,12 +7,101 @@ html, body{
 }
 
 body{
-  min-width:526px;
+    min-width:526px;
+}
+
+*:focus {
+    outline-color: #0054A6;
+}
+
+.selecttabs{
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    border: 0;
+}
+
+.tab{
+    display: none;
+    padding: 12px;
+    margin: 0;
+    background-color: #1d1d1d;
+    color: #e5e5e5;
+    cursor: pointer;
+    border: 0;
+    border-radius: 2px 12px 0 0;
+    border-top: 2px #1d1d1d solid;
+    border-right: 2px #1d1d1d solid;
+    box-shadow: -1px -2px 2px rgba(0,0,0,0.2);
+}
+
+
+.activeinline{
+    display: inline-block;
+}
+
+.selectedtab{
+    background-color: #e5e5e5;
+    color: #0054A6;
+    border-top: 2px #0054A6 solid;
+    border-right: 2px #0054A6 solid;
+}
+
+.quoteselect{
+    display: block;
+    margin: 10px 0 0 0;
+    padding: 0;
+    width: 100%;
+    background: rgb(229,229,229);
+background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%);
+}
+
+.quoteselect tr{
+    white-space: nowrap;
+}
+
+.quoteselect td{
+    margin: 0;
+}
+
+#logtable{
+    display: block;
+    text-align: left;
+    font-size: 10px;
+    border-collapse: collapse;
+    margin: auto;
+}
+
+#logarea{
+    background-color: #e5e5e5;
+    width: 95%;
+    height: 65%;
+    margin: auto;
+    overflow: auto;
+}
+
+.tableclose{
+    font-size: 25px;
+    font-weight: bolder;
+    width: 35px;
+    color: #131313;
+    padding: 0px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.addbtn{
+    text-align: center;
+    margin: auto;
+    width: 23px;
+    height: 23px;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .loader {
   border: 8px solid rgb(0,0,0,0.75);
-  border-radius: 50%;
+  border-radius: 56px;
   border-top: 8px solid #0054A6;
   width: 56px;
   height: 56px;
@@ -35,6 +124,24 @@ body{
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.drawer{
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    padding-top: 65px;
+    background-color: #1d1d1d;
+    box-shadow: 2px 0px 10px #000;
+
+}
+
+.drawercontents{
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .hidden{
@@ -99,6 +206,22 @@ body{
   width: 100%;
 }
 
+#about{
+    padding: 10px;
+    text-align: left;
+    background-color: #e5e5e5;
+    width: 85%;
+    height: 65%;
+    margin: auto;
+    overflow: auto;
+}
+
+#changelog{
+    font-family: courier, monospace;
+    margin: auto;
+    overflow: auto;
+}
+
 .required{
   font-weight: bold;
   color: #00a32e;
@@ -113,11 +236,48 @@ body{
   top: 0;
   left: 0;
   box-shadow: 0px 0px 4px black;
+  white-space: nowrap;
 }
 
 .icon{
   height: 65px;
   float: left;
+}
+
+.menuicon{
+  display: block;
+  height: 33px;
+  padding: 16px;
+  margin-left: -20px;
+  float: left;
+  cursor: pointer;
+  transition: margin-left 0.5s;
+  -webkit-transition: margin-left 0.5s;
+}
+
+.drawerlink{
+    display: block;
+    padding: 15px;
+    padding-left: 30px;
+    cursor: pointer;
+    color: #dadada;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.drawerlink:hover{
+    background-color: #202020;
+}
+
+.drawerlink:active{
+    background-color: #131313;
+    color: rgb(0, 94, 189);
+}
+
+.menuiconopen{
+    margin-left: -30px;
+    transition: margin-left 0.5s;
+    -webkit-transition: margin-left 0.5s;
 }
 
 .qsicon{
@@ -145,19 +305,85 @@ body{
   background-color: #e5e5e5;
 }
 
-.quoteselect{
-  padding: 10px;
-  background-color: #d4d4d4;
+.filter{
+    background-color: #dadada;
+}
+
+.filterbtn{
+    display: block;
+    background-color: #1d1d1d;
+    color: #e5e5e5;
+    padding: 10px;
+    margin: 0 5px 0 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 350px;
+}
+
+.filterbtn:hover{
+    background-color: #202020;
+}
+
+.filterbtn:active{
+    background-color: #131313;
+    color: #0054A6;
+}
+
+.filteractive{
+    border-radius: 5px 5px 0 0;
+}
+
+.filterbtn:after{
+    content: "\0fe40";
+    float: right;
+    font-weight: bolder;
+}
+
+.filteractive:after{
+    content: "\0fe3f";
+}
+
+#quotefilter{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: none;
+    color: #e5e5e5;
+    cursor: pointer;
+    width: 380px;
+}
+
+#quotefilter li{
+    list-style-type: none;
+    margin: 0 5px 0 5px;
+    padding: 10px;
+    background-color: #3b3b3b;
+}
+
+#quotefilter label{
+    display: block;
+    width: 100%;
+    cursor: pointer;
+}
+
+#quotefilter li:hover{
+    background-color: #2e2e2e;
 }
 
 .note{
-  padding: 10px;
-  background: #e5e5e5;
   display: none;
+  background-color: #e5e5e5;
 }
 
 .active{
   display: block;
+  width: 100%;
+}
+
+.preactive{
+    position: absolute;
+    display: inline-block;
+    width: 100vw;
 }
 
 #freeform{
@@ -189,6 +415,54 @@ body{
   background-color: #004395;
 }
 
+textarea, input{
+  font-family: 'Roboto', sans-serif;
+  padding: 4px;
+}
+
 textarea{
-  font-family: Arial, sans-serif;
+    min-height: 75px;
+}
+
+table{
+    padding: 10px;
+}
+
+td{
+    min-width: 50px;
+}
+
+.note h2,.note h3{
+    padding: 2px;
+    padding-left: 10px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #3b3b3b;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0054A6;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #004395;
+}
+
+#hiddensnake{
+    display: none;
+    width: 100%;
+    height: 600px;
+    text-align: center;
+    margin: auto;
+    border: none;
+    overflow: hidden;
 }

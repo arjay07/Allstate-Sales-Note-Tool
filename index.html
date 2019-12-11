@@ -3,19 +3,51 @@
 
 <head>
 	<title>Allstate Sales Note Tool</title>
+    	
+    <link rel='icon' href='images/icon.ico' type='image/x-icon'/ >
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="default.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 	<script src="script.js">
 
 	</script>
+    <script src="lib/zipcelx.js">
+
+	</script>
 </head>
 
 <body>
+
+    <div class="drawer hidden faster" id="drawer">
+        <div class="drawercontents">
+
+            <a class="drawerlink"><h3>Quick Links</h3></a>
+            <a class="drawerlink ieonly" href="https://oneview.allstate.com/wps/myportal/sas" target="_blank">1View</a>
+            <a class="drawerlink ieonly" href="https://oneview.allstate.com/CTIServer/CTIClientApp.jnlp" target="_blank">1View Telephony</a>
+            <a class="drawerlink" href="https://home.allstate.com/" target="_blank">AllConnect</a>
+            <a class="drawerlink ieonly" href="http://alliance/" target="_blank">Alliance</a>
+            <a class="drawerlink ieonly" href="http://dap/" target="_blank">DAP</a>
+            <a class="drawerlink" href="https://allstate.rightanswers.com/portal/sa/" target="_blank">Right Answers</a>
+            <a class="drawerlink" href="https://agtacc.allstate.com/FIM/sps/successfactors_ag/saml20/logininitial?RequestBinding=HTTPPost&NameIdFormat=email&PartnerId=https://www.successfactors.com" target="_blank">Talent Connection</a>
+            <a class="drawerlink ieonly" href="https://entimpact360/wfo" target="_blank">Verint</a>
+            <a class="drawerlink"><h3>Bind Log</h3></a>
+            <a class="drawerlink" onclick="openBindLogView()">View/Edit</a>
+            <a class="drawerlink" onclick="downloadBindLog()">Download</a>
+            <a class="drawerlink"><h3>About</h3></a>
+            <a class="drawerlink" onclick="openContact()">Contact</a>
+            <a class="drawerlink" onclick="openChangelog()">Changelog</a>
+
+        </div>
+        
+    </div>
+
 	<div class="animated navbar slideInDown fast delay-2s">
+		<img src="images/menu.png" id="menuicon" class="menuicon" onclick="toggleDrawer()"/>
 		<img src="images/logo.png" class="icon" /><span class="title">Sales Note Tool</span>
-    <img src="images/quickstart.png" id="quickstart" class="qsicon hidden" title="Quick Start" onclick="quickStart()"/>
-  </div>
-  <div class="content">
+        <img src="images/quickstart.png" id="quickstart" class="qsicon hidden" title="Quick Start" onclick="quickStart()"/>
+    </div>
+
+    <div class="content">
 
     <div id="customerinfo">
       <table>
@@ -46,20 +78,34 @@
       </table>
     </div>
 
-    <div class="quoteselect">
-      <span class="required">Quote: </span>
-      <select id="quotes" onchange="selectquote();">
-    <option value="auto">Auto</option>
-    <option value="motorcycle">Motorcycle</option>
-    <option value="orv">ORV</option>
-    <option value="boat">Boat</option>
-    <option value="renters">Renters</option>
-    <option value="homeowners">Homeowners</option>
-        <option value="condo">Condo</option>
-  </select>
-    </div>
+    <table id="quoteselect" class="quoteselect">
+        <tr class="filter">
+            <div class="filterbtn" onclick="toggleDropDown()">Quotes:</div>
+            <ul id="quotefilter">
+            <li><label><input class="filtercheckbox" id="checkauto" onchange="refreshTabs()" type="checkbox"/> Auto</label></li>
+            <li><label><input class="filtercheckbox" id="checkmotorcycle" onchange="refreshTabs()" type="checkbox"/> Motorcycle</label></li>
+            <li><label><input class="filtercheckbox" id="checkorv" onchange="refreshTabs()" type="checkbox"/> ORV</label></li>
+            <li><label><input class="filtercheckbox" id="checkboat" onchange="refreshTabs()" type="checkbox"/> Boat</label></li>
+            <li><label><input class="filtercheckbox" id="checkrenters" onchange="refreshTabs()" type="checkbox"/> Renters</label></li>
+            <li><label><input class="filtercheckbox" id="checkhomeowners" onchange="refreshTabs()" type="checkbox"/> Homeowners</label></li>
+            <li><label><input class="filtercheckbox" id="checkcondo" onchange="refreshTabs()" type="checkbox"/> Condo</label></li>
+            <li><label><input class="filtercheckbox" id="checkpup" onchange="refreshTabs()" type="checkbox"/> PUP</label></li>
+            </ul>
+        </tr>
+        <tr>
+            <td id="tabauto" onclick="switchQuote(this.id)" class="tab selectedtab" value="auto">Auto</td>
+            <td id="tabmotorcycle" onclick="switchQuote(this.id)" class="tab" value="motorcycle">Motorcycle</td>
+            <td id="taborv" onclick="switchQuote(this.id)" class="tab" value="orv">ORV</td>
+            <td id="tabboat" onclick="switchQuote(this.id)" class="tab" value="boat">Boat</td>
+            <td id="tabrenters" onclick="switchQuote(this.id)" class="tab" value="renters">Renters</td>
+            <td id="tabhomeowners" onclick="switchQuote(this.id)" class="tab" value="homeowners">Homeowners</td>
+            <td id="tabcondo" onclick="switchQuote(this.id)" class="tab" value="condo">Condo</td>
+            <td id="tabpup" onclick="switchQuote(this.id)" class="tab" value="pup">PUP</td>
+        </tr>
+    </table>
 
     <div class="note active" id="auto">
+        <h2>Auto Quote</h2>
       <h3>General</h3>
       <table>
         <tr>
@@ -145,6 +191,7 @@
           <td>
             <select id="decline">
             <option value="">--</option>
+            <option value="not interested">Not interested</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -196,6 +243,7 @@
       </table>
     </div>
     <div class="note" id="motorcycle">
+        <h2>Motorcycle Quote</h2>
       <h3>General</h3>
       <table>
         <tr>
@@ -269,6 +317,7 @@
           <td>
             <select id="decline">
             <option value="">--</option>
+            <option value="not interested">Not interested</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -320,6 +369,7 @@
       </table>
     </div>
     <div class="note" id="orv">
+        <h2>Off-Road Vehicle Quote</h2>
       <h3>General</h3>
       <table>
         <tr>
@@ -393,6 +443,7 @@
           <td>
             <select id="decline">
             <option value="">--</option>
+            <option value="not interested">Not interested</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -444,6 +495,7 @@
       </table>
     </div>
     <div class="note" id="boat">
+        <h2>Boat Quote</h2>
       <h3>General</h3>
       <table>
         <tr>
@@ -517,6 +569,7 @@
           <td>
             <select id="decline">
             <option value="">--</option>
+            <option value="not interested">Not interested</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -568,6 +621,7 @@
       </table>
     </div>
     <div class="note" id="renters">
+        <h2>Renters Quote</h2>
       <h3>General</h3>
       <table>
         <tr>
@@ -617,6 +671,7 @@
           <td>
             <select id="decline">
             <option value="">--</option>
+            <option value="not interested">Not interested</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -668,6 +723,7 @@
       </table>
     </div>
     <div class="note" id="homeowners">
+        <h2>Homeowners Quote</h2>
       <h3>General</h3>
       <table>
         <tr>
@@ -717,6 +773,7 @@
           <td>
             <select id="decline">
             <option value="">--</option>
+            <option value="not interested">Not interested</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -768,6 +825,7 @@
       </table>
     </div>
     <div class="note" id="condo">
+        <h2>Condominium Quote</h2>
       <h3>General</h3>
       <table>
         <tr>
@@ -817,6 +875,127 @@
           <td>
             <select id="decline">
             <option value="">--</option>
+            <option value="not interested">Not interested</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select id="informedoftdocs">
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="note" id="pup">
+        <h2>PUP Quote</h2>
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+        </tr>
+        <tr>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+            <td class="required">Underlying Limits</td>
+            <td class="required">Modified?
+            <select id="limitsmodified">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Auto Bodily Injury</td>
+            <td><input id="autobilimits" type="text" placeholder="250/500"/></td>
+        </tr>
+        <tr>
+            <td>Auto Property Damage</td>
+            <td><input id="autopdlimits" type="text" placeholder="100"/></td>
+        </tr>
+        <tr>
+            <td>Property Liability</td>
+            <td><input id="propertyliability" type="text" placeholder="300"/></td>
+        </tr>
+        <tr>
+            <td>New Auto Premium</td>
+            <td><input id="newautopremium" type="number" placeholder="(If limits were changed)"/></td>
+            <td>New Property Premium</td>
+            <td><input id="newpropertypremium" type="number" placeholder="(If limits were changed)"/></td>
+        </tr>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="not interested">Not interested</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -871,7 +1050,7 @@
     <div class="freeform">
       <textarea id="freeform" placeholder="Notes..."></textarea>
     </div>
-    <div class="menu">
+    <div class="menu" onclick="doubleclick(this, function(){console.log('single click');}, toggleSnake)">
       <div class="btn" onclick="generateNote()">Generate</div>
       <div class="btn" onclick="resetNotes()">Reset</div>
     </div>
@@ -881,14 +1060,49 @@
     <h2 class="oltitle">Preview Notes</h2>
     <textarea spellcheck="true" id="preview" class="previewnote"></textarea>
     <div class="olmenu menu">
-      <div class="btn" onclick="copy()">Copy</div>
+      <div class="btn" onclick="copy()">Copy</div> <div class="btn" onclick="addToBindLog()">Add to Bind Log</div>
     </div>
+  </div>
+  <div id="bindlogoverlay" class="overlay faster">
+    <div class="closebtn" onclick="closeBindLog()">&times;</div>
+    <h2 class="oltitle">Bind Log</h2>
+    <div id="logarea">
+        <table id="logtable"></table>
+        <div class="addbtn btn" onclick="addBindRow()">&plus;</div>
+    </div>
+    <div class="olmenu menu">
+      <div class="btn" onclick="saveEditedBindLog()">Save</div>
+      <div class="btn" onclick="downloadBindLog()">Download</div>
+    </div>
+  </div>
+  <div id="aboutoverlay" class="overlay faster">
+    <div class="closebtn" onclick="closeAbout()">&times;</div>
+    <h2 class="oltitle">About</h2>
+    <div id="about">
+        <div id="info">
+            <img src="images/icon.ico"/>
+            <h2>Allstate Sales Note Tool</h2>
+            <p>Created and designed by Leandro Yabut.</p>
+            <h3>Contact</h3>
+            <p>If you have any questions or suggestions, feel free to email me!</p>
+            <p><a href="mailto:lyabu@allstate.com">lyabu@allstate.com</a></p>
+        </div>
+    </div>
+  </div>
+  <div id="changelogoverlay" class="overlay faster">
+    <div class="closebtn" onclick="closeChangelog()">&times;</div>
+    <h2 class="oltitle">Changelog</h2>
+    <textarea id="changelog" class="previewnote" readonly></textarea>
   </div>
   <div id="splash" class="splash faster">
       <img src="images/logo.png" class="splashimg"/>
       <h2 class="splashh2">Sales Note Tool</h2>
       <div class="loader"></div>
   </div>
+
+<iframe id="hiddensnake" src="/snake.html">
+</iframe>
+
 </body>
 
 </html>
