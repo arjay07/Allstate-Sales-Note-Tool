@@ -1,6 +1,17 @@
 Allstate Sales Note Tool
 Changelog
 
+12/17/2019
+Version 1.4.2
+- Added Calculator to Tools
+- Added Motor Home Notes Tab
+- Start up errors now show on loading screen
+
+12/16/2019
+Version 1.4.1
+- Bind Log is now under a Tools section
+- Added Narrative Generator Tool
+
 12/11/2019
 Version 1.4
 - All notes generate into one master note

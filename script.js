@@ -33,6 +33,8 @@ var binds = [
 function onLoad() {
 
     if(getCookie("bindlog")!="")binds=retrieveBindLog();
+    
+    dragElement(document.getElementById("calcdraggable"));
 
     isie = false;
     var ua = window.navigator.userAgent;
@@ -50,6 +52,8 @@ function onLoad() {
     for (var i = 0; i < notes.length; i++) {
         notes[i].classList.add("faster");
     }
+
+    animateCSS(".navbar", "slideInDown");
 
     if (isie) {
         var qs = document.getElementById("quickstart");
@@ -75,14 +79,21 @@ function onLoad() {
         }, 1450);
     }
 
+    var dates = document.getElementsByTagName("input");
+
+    for(var ii=0;ii<dates.length;ii++){
+        if(dates[ii].type == "date"){
+            dates[ii].value=getTodayInput();
+        }
+    }
+
     var dc = document.getElementsByClassName("drawercontents")[0];
 
     document.getElementById("checkauto").checked = true;
     document.getElementById("checkhomeowners").checked = true;
     refreshTabs();
 
-    var drawer = document.getElementById("drawer");
-    var dropdown = document.getElementById("quoteselct");
+    var drawercontents = document.getElementsByClassName("drawercontents")[0];
 
 }
 
@@ -205,6 +216,8 @@ function resetNotes() {
         for (var ii = 0; ii < elements.length; ii++) {
             if (elements[ii].type == "text" || elements[ii].type == "number") {
                 elements[ii].value = "";
+            }else if(elements[ii].type == "date"){
+                elements[ii].value=getTodayInput();
             }
         }
         var areas = document.getElementsByTagName("textarea");
@@ -212,21 +225,29 @@ function resetNotes() {
             areas[aa].innerHTML = "";
             areas[aa].value = "";
         }
+        var selects = document.getElementsByTagName("select");
+        for(var ss=0;ss<selects.length;ss++){
+            var s=selects[ss];
+            s.selectedIndex=0;
+        }
     }
 
 }
 
+var dropdownOpen=false;
+
 function toggleDropDown(){
     var btn=document.getElementsByClassName("filterbtn")[0];
-    var dropdown=document.getElementById("quotefilter");
+    var dropdown=document.getElementsByClassName("quotefilter")[0];
 
-    if(dropdown.style.display=="block"){
+    if(dropdownOpen){
         btn.classList.remove("filteractive");
-        dropdown.style.display="none";
+        dropdown.classList.remove("quotefilteractive");
+        dropdownOpen=false;
     }else{
         btn.classList.add("filteractive");
-        dropdown.style.display="block";
-
+        dropdown.classList.add("quotefilteractive");
+        dropdownOpen=true;
     }
 }
 
@@ -389,6 +410,24 @@ function closeAbout() {
     }
 }
 
+function openNarrative(){
+    animateCSS("#narrativeoverlay", "fadeIn");
+    var overlay = document.getElementById("narrativeoverlay");
+    overlay.classList.add("active");
+}
+
+function closeNarrative() {
+    if(!isie)
+    animateCSS("#narrativeoverlay", "fadeOut", function () {
+        var overlay = document.getElementById("narrativeoverlay");
+        overlay.classList.remove("active");
+    });
+    else{
+        var overlay = document.getElementById("narrativeoverlay");
+        overlay.classList.remove("active");
+    }
+}
+
 function openChangelog(){
     animateCSS("#changelogoverlay", "fadeIn");
 
@@ -410,6 +449,31 @@ function closeChangelog() {
     else{
         var overlay = document.getElementById("changelogoverlay");
         overlay.classList.remove("active");
+    }
+}
+
+function openCalculator(){
+    animateCSS("#calcdraggable", "fadeInUp");
+    var calc=document.getElementById("calcdraggable");
+    var ifcalc=document.getElementById("calculator");
+    calc.style.display="block";
+
+     addInOutClick(calc, function(){
+         calc.style.opacity=1;
+     }, function(){
+         calc.style.opacity=0.5;
+     });
+}
+
+function closeCalculator(){
+    if(!isie)
+        animateCSS("#calcdraggable", "fadeOutDown", function(){
+            var calc=document.getElementById("calcdraggable");
+            calc.style.display="none";
+        });
+    else{
+        var calc=document.getElementById("calcdraggable");
+        calc.style.display="none";
     }
 }
 
@@ -582,6 +646,13 @@ function copy() {
     alert("Copied note to clipboard.")
 }
 
+function copyNarrative() {
+    var textarea = document.getElementById("narrative");
+    textarea.select();
+    document.execCommand("copy");
+    alert("Copied narrative to clipboard.")
+}
+
 function createBind(customername, controlnumber, premium, items, policynumber, referencenumber){
 
     var bind = [
@@ -675,6 +746,60 @@ function quickStart() {
 
 }
 
+// Work in progress
+function updatemiles(){
+
+    var states=document.getElementById("states");
+    var gen=document.getElementById("shortrategenerator");
+    var njref=document.getElementById("njref");
+    var milesinput=document.getElementById("miles");
+
+    var state=states.options[states.selectedIndex].value;
+    var miles=parseInt(milesinput.value);
+    var shortrate=false;
+
+    njref.style.display="none";
+
+    if(state=="ca"){
+        if(miles<12000)shortrate=true;
+    }else if(state=="fl"){
+        if(miles<14000)shortrate=true;
+    }else if(state=="nj"){
+        njref.style.display="block";
+    }else{
+        if(miles<8000)shortrate=true;
+    }
+
+    if(shortrate){
+        gen.style.display="block";
+    }else{
+        gen.style.display="none";
+    }
+
+    generateNarrative(shortrate);
+
+}
+
+function generateNarrative(shortrate){
+
+    var veh=document.getElementById("vehicle").value;
+    var srd=document.getElementById("shortrateddriver").value;
+    var ls=document.getElementById("lifestyle").options[document.getElementById("lifestyle").selectedIndex].value;
+    var miles=document.getElementById("miles").value;
+
+    var nar=document.getElementById("narrative");
+
+    var narrative="";
+
+    if(shortrate){
+        narrative="Idaho CCC. Short Mileage. Est. annual mileage is " + miles + " for "+ veh +". "+ srd +" "+ ls +".";
+    }else{
+        narrative="Customer states they drive " + miles + " miles per year."
+    } 
+
+    nar.value=narrative;
+}
+
 function isDescendant(parent, child) {
     var node = child.parentNode;
     while (node != null) {
@@ -744,6 +869,17 @@ function getTodayEXCEL(){
     return today;
 }
 
+function getTodayInput(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+
+    return today;
+}
+
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1)
 }
@@ -765,6 +901,68 @@ function readTextFile(file)
     }
     rawFile.send(null);
     return allText;
+}
+
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    // if present, the header is where you move the DIV from:
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    // otherwise, move the DIV from anywhere inside the DIV:
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    // stop moving when mouse button is released:
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+function addInOutClick(element, incallback, outcallback, win){
+    if(!win) win=window;
+    win.addEventListener('mousedown', function(e){   
+        if (element.contains(e.target)){
+            // Clicked in box
+            incallback();
+        } else{
+            // Clicked outside the box
+            outcallback();
+        }
+        });
+}
+
+window.onerror = function(msg, url, linenumber){
+    console.error(msg);
+    var se=document.getElementById("se");
+    se.innerText+=msg+'\nURL: '+url+'\nLine Number: '+linenumber;
+    return true;
 }
 
 var _0x54c5=['block','right','down','left','addEventListener','keyCode','length','setAttribute','data-dblclick','getAttribute','removeAttribute','getElementById','style','display','none'];(function(_0x350604,_0x196ae7){var _0x5eb505=function(_0x43833b){while(--_0x43833b){_0x350604['push'](_0x350604['shift']());}};_0x5eb505(++_0x196ae7);}(_0x54c5,0x133));var _0xfc8c=function(_0x5b6207,_0x5a8fc9){_0x5b6207=_0x5b6207-0x0;var _0x583b6f=_0x54c5[_0x5b6207];return _0x583b6f;};var allowSnake=![];function doubleclick(_0x30c8db,_0x5d3e4a,_0xfc7248){if(_0x30c8db['getAttribute']('data-dblclick')==null){_0x30c8db[_0xfc8c('0x0')](_0xfc8c('0x1'),0x1);setTimeout(function(){if(_0x30c8db[_0xfc8c('0x2')](_0xfc8c('0x1'))==0x1){_0x5d3e4a();}_0x30c8db[_0xfc8c('0x3')](_0xfc8c('0x1'));},0x12c);}else{_0x30c8db[_0xfc8c('0x3')](_0xfc8c('0x1'));_0xfc7248();}}function toggleSnake(){if(allowSnake){var _0x2fa168=document[_0xfc8c('0x4')]('hiddensnake');if(_0x2fa168[_0xfc8c('0x5')][_0xfc8c('0x6')]==_0xfc8c('0x7')){_0x2fa168[_0xfc8c('0x5')][_0xfc8c('0x6')]=_0xfc8c('0x8');}else{_0x2fa168['style'][_0xfc8c('0x6')]=_0xfc8c('0x7');}}}var allowedKeys={37:'left',38:'up',39:_0xfc8c('0x9'),40:_0xfc8c('0xa'),65:'a',66:'b'};var konamiCode=['up','up',_0xfc8c('0xa'),_0xfc8c('0xa'),_0xfc8c('0xb'),_0xfc8c('0x9'),_0xfc8c('0xb'),_0xfc8c('0x9'),'b','a'];var konamiCodePosition=0x0;document[_0xfc8c('0xc')]('keydown',function(_0x166dd2){var _0xcdbbb9=allowedKeys[_0x166dd2[_0xfc8c('0xd')]];var _0x5dc3b7=konamiCode[konamiCodePosition];if(_0xcdbbb9==_0x5dc3b7){konamiCodePosition++;if(konamiCodePosition==konamiCode[_0xfc8c('0xe')]){activateCheats();konamiCodePosition=0x0;}}else{konamiCodePosition=0x0;}});function activateCheats(){alert('Allstate\x20Mayhem\x20Snake\x20Activated.');allowSnake=!![];}

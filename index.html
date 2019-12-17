@@ -3,45 +3,53 @@
 
 <head>
 	<title>Allstate Sales Note Tool</title>
-    	
-    <link rel='icon' href='images/icon.ico' type='image/x-icon'/ >
-    <link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto&display=swap" rel="stylesheet">
+
+	<link rel='icon' href='images/icon.ico' type='image/x-icon' />
+	<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="default.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 	<script src="script.js">
 
 	</script>
-    <script src="lib/zipcelx.js">
+	<script src="lib/zipcelx.js">
 
 	</script>
 </head>
 
 <body>
 
-    <div class="drawer hidden faster" id="drawer">
-        <div class="drawercontents">
+	<div class="drawer hidden faster" id="drawer">
+		<div class="drawercontents">
 
-            <a class="drawerlink"><h3>Quick Links</h3></a>
-            <a class="drawerlink ieonly" href="https://oneview.allstate.com/wps/myportal/sas" target="_blank">1View</a>
-            <a class="drawerlink ieonly" href="https://oneview.allstate.com/CTIServer/CTIClientApp.jnlp" target="_blank">1View Telephony</a>
-            <a class="drawerlink" href="https://home.allstate.com/" target="_blank">AllConnect</a>
-            <a class="drawerlink ieonly" href="http://alliance/" target="_blank">Alliance</a>
-            <a class="drawerlink ieonly" href="http://dap/" target="_blank">DAP</a>
-            <a class="drawerlink" href="https://allstate.rightanswers.com/portal/sa/" target="_blank">Right Answers</a>
-            <a class="drawerlink" href="https://agtacc.allstate.com/FIM/sps/successfactors_ag/saml20/logininitial?RequestBinding=HTTPPost&NameIdFormat=email&PartnerId=https://www.successfactors.com" target="_blank">Talent Connection</a>
-            <a class="drawerlink ieonly" href="https://entimpact360/wfo" target="_blank">Verint</a>
-            <a class="drawerlink"><h3>Bind Log</h3></a>
-            <a class="drawerlink" onclick="openBindLogView()">View/Edit</a>
-            <a class="drawerlink" onclick="downloadBindLog()">Download</a>
-            <a class="drawerlink"><h3>About</h3></a>
-            <a class="drawerlink" onclick="openContact()">Contact</a>
-            <a class="drawerlink" onclick="openChangelog()">Changelog</a>
+			<a class="drawerlink">
+				<h3>Quick Links</h3>
+			</a>
+			<a class="drawerlink ieonly" href="https://oneview.allstate.com/wps/myportal/sas" target="_blank">1View</a>
+			<a class="drawerlink ieonly" href="https://oneview.allstate.com/CTIServer/CTIClientApp.jnlp" target="_blank">1View Telephony</a>
+			<a class="drawerlink" href="https://home.allstate.com/" target="_blank">AllConnect</a>
+			<a class="drawerlink ieonly" href="http://alliance/" target="_blank">Alliance</a>
+			<a class="drawerlink ieonly" href="http://dap/" target="_blank">DAP</a>
+			<a class="drawerlink" href="https://allstate.rightanswers.com/portal/sa/" target="_blank">Right Answers</a>
+			<a class="drawerlink" href="https://agtacc.allstate.com/FIM/sps/successfactors_ag/saml20/logininitial?RequestBinding=HTTPPost&NameIdFormat=email&PartnerId=https://www.successfactors.com"
+			 target="_blank">Talent Connection</a>
+			<a class="drawerlink ieonly" href="https://entimpact360/wfo" target="_blank">Verint</a>
+			<a class="drawerlink">
+				<h3>Tools</h3>
+			</a>
+			<a class="drawerlink" onclick="openBindLogView()">Bind Log</a>
+			<a class="drawerlink" onclick="openCalculator()">Calculator</a>
+			<a class="drawerlink" onclick="openNarrative()">Narrative Generator</a>
+			<a class="drawerlink">
+				<h3>About</h3>
+			</a>
+			<a class="drawerlink" onclick="openContact()">Contact</a>
+			<a class="drawerlink" onclick="openChangelog()">Changelog</a>
 
-        </div>
-        
-    </div>
+		</div>
 
-	<div class="animated navbar slideInDown fast delay-2s">
+	</div>
+
+	<div class="navbar fast delay-2s">
 		<img src="images/menu.png" id="menuicon" class="menuicon" onclick="toggleDrawer()"/>
 		<img src="images/logo.png" class="icon" /><span class="title">Sales Note Tool</span>
         <img src="images/quickstart.png" id="quickstart" class="qsicon hidden" title="Quick Start" onclick="quickStart()"/>
@@ -81,7 +89,7 @@
     <table id="quoteselect" class="quoteselect">
         <tr class="filter">
             <div class="filterbtn" onclick="toggleDropDown()">Quotes:</div>
-            <ul id="quotefilter">
+            <ul class="quotefilter">
             <li><label><input class="filtercheckbox" id="checkauto" onchange="refreshTabs()" type="checkbox"/> Auto</label></li>
             <li><label><input class="filtercheckbox" id="checkmotorcycle" onchange="refreshTabs()" type="checkbox"/> Motorcycle</label></li>
             <li><label><input class="filtercheckbox" id="checkorv" onchange="refreshTabs()" type="checkbox"/> ORV</label></li>
@@ -89,6 +97,7 @@
             <li><label><input class="filtercheckbox" id="checkrenters" onchange="refreshTabs()" type="checkbox"/> Renters</label></li>
             <li><label><input class="filtercheckbox" id="checkhomeowners" onchange="refreshTabs()" type="checkbox"/> Homeowners</label></li>
             <li><label><input class="filtercheckbox" id="checkcondo" onchange="refreshTabs()" type="checkbox"/> Condo</label></li>
+            <li><label><input class="filtercheckbox" id="checkmotorhome" onchange="refreshTabs()" type="checkbox"/> Motor Home</label></li>
             <li><label><input class="filtercheckbox" id="checkpup" onchange="refreshTabs()" type="checkbox"/> PUP</label></li>
             </ul>
         </tr>
@@ -100,6 +109,7 @@
             <td id="tabrenters" onclick="switchQuote(this.id)" class="tab" value="renters">Renters</td>
             <td id="tabhomeowners" onclick="switchQuote(this.id)" class="tab" value="homeowners">Homeowners</td>
             <td id="tabcondo" onclick="switchQuote(this.id)" class="tab" value="condo">Condo</td>
+            <td id="tabmotorhome" onclick="switchQuote(this.id)" class="tab" value="motorhome">Motor Home</td>
             <td id="tabpup" onclick="switchQuote(this.id)" class="tab" value="pup">PUP</td>
         </tr>
     </table>
@@ -926,6 +936,136 @@
         </tr>
       </table>
     </div>
+     <div class="note" id="motorhome">
+        <h2>Motor Home Quote</h2>
+      <h3>General</h3>
+      <table>
+        <tr>
+          <td class="required">Control #</td>
+          <td><input id="controlnumber" type="text"></td>
+        </tr>
+        <tr>
+          <td>New Policy #</td>
+          <td><input id="policynumber" type="text"></td>
+        </tr>
+        <tr>
+          <td class="required">Effective Date</td>
+          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td>Declared Prior</td>
+          <td>
+            <select id="declaredprior">
+            <option value="">--</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>No Need?</td>
+          <td>
+            <select id="noneed">
+            <option value="">--</option>
+            <option value="Did not own">Did Not Own</option>
+            <option value="Military">Military</option>
+            <option value="Other">Other</option>
+            </select>
+          </td>
+          <td class="required">PQB Modified?</td>
+          <td>
+            <select id="pqbmodified">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td># of Vehicles</td>
+          <td><input id="vehicles" type="number"></td>
+        </tr>
+      </table>
+      <h3>Coverages</h3>
+      <table>
+        <tr>
+          <td>Bodily Injury</td>
+          <td><input id="bilimits" type="text" placeholder="100/300" /></td>
+        </tr>
+        <tr>
+          <td>Property Damage</td>
+          <td><input id="pdlimits" type="text" placeholder="100" /></td>
+        </tr>
+        <tr>
+          <td>Collision</td>
+          <td><input id="collision" type="number" placeholder="Deductible" /></td>
+        </tr>
+        <tr>
+          <td>Comprehensive</td>
+          <td><input id="comprehensive" type="number" placeholder="Deductible" /></td>
+        </tr>
+        <tr>
+          <td class="required">Rejected Coverages</td>
+          <td><textarea style="width:100%" id="rejected" type="text" placeholder="(Roadside, Rental Reimbursement, etc...)"></textarea></td>
+        </tr>
+      </table>
+      <h3>Payment</h3>
+      <table>
+        <tr>
+          <td class="required">Quoted Price</td>
+          <td><input id="quoteprice" type="number" /></td>
+          <td class="required">Declined Bind, Why?</td>
+          <td>
+            <select id="decline">
+            <option value="">--</option>
+            <option value="not interested">Not interested</option>
+            <option value="premium too high">Premium is too high</option>
+            <option value="wants to think about it">Wants to think about it</option>
+            <option value="wants to speak with spouse">Wants to speak with spouse</option>
+            <option value="does not qualify">Does not qualify</option>
+            <option value="no prior insurance">No prior insurance</option>
+            <option value="referred to agent">Referred to agent</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Down Payment</td>
+          <td><input type="number" id="downpayment" /></td>
+          <td>Pay Method</td>
+          <td><select id="paymethod">
+            <option value="">--</option>
+            <option value="credit card">Credit Card</option>
+            <option value="electronic check">Electronic Check</option>
+            <option value="cod">C.O.D</option>
+        </tr>
+        <tr>
+          <td>Reference #</td>
+          <td><input type="number" id="refnumber"/></td>
+        </tr>
+      </table>
+      <h3>Documents</h3>
+      <table>
+        <tr>
+          <td>Documents Recieved</td>
+          <td><textarea id="docsreceived"></textarea></td>
+          <td class="required">Informed of T-Docs</td>
+          <td>
+            <select id="informedoftdocs">
+              <option value="">--</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>E-Sign</td>
+          <td>
+            <select id="esign">
+              <option value="">--</option>
+              <option value="opt-in">Opt-In</option>
+              <option value="opt-out">Opt-Out</option>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </div>
     <div class="note" id="pup">
         <h2>PUP Quote</h2>
       <h3>General</h3>
@@ -1055,6 +1195,12 @@
       <div class="btn" onclick="resetNotes()">Reset</div>
     </div>
   </div>
+
+    <div id="calcdraggable" class="hidden faster">
+        <div id="calcbar"><div id="calcclose" onclick="closeCalculator()">&times;</div></div>
+        <iframe id="calculator" style="border: none" src="https://calculator-1.com/outdoor/?f=1d1d1d&r=0054A6" scrolling="no" width="219" height="302" frameborder="0"></iframe>
+    </div>
+
   <div id="overlay" class="overlay faster">
     <div class="closebtn" onclick="closePreview()">&times;</div>
     <h2 class="oltitle">Preview Notes</h2>
@@ -1065,7 +1211,7 @@
   </div>
   <div id="bindlogoverlay" class="overlay faster">
     <div class="closebtn" onclick="closeBindLog()">&times;</div>
-    <h2 class="oltitle">Bind Log</h2>
+    <h2 class="oltitle">View/Edit Bind Log</h2>
     <div id="logarea">
         <table id="logtable"></table>
         <div class="addbtn btn" onclick="addBindRow()">&plus;</div>
@@ -1073,6 +1219,67 @@
     <div class="olmenu menu">
       <div class="btn" onclick="saveEditedBindLog()">Save</div>
       <div class="btn" onclick="downloadBindLog()">Download</div>
+    </div>
+  </div>
+  <div id="narrativeoverlay" class="overlay faster">
+    <div class="closebtn" onclick="closeNarrative()">&times;</div>
+    <h2 class="oltitle">Narrative Generator</h2>
+    <div id="narrativegenerator">
+        <div id="narrativetypeselector">
+            Type of Narrative: 
+            <select id="narrativetype">
+                <option value="shortrate">Short Rate</option>
+            </select>
+        </div>
+        <div id="shortratenarrative" class="narrative">
+            <table>
+                <tr>
+                    <td>State:</td>
+                    <td>
+                        <select id="states" onchange="updatemiles()">
+                            <option value="ca">CA</option>
+                            <option value="fl">FL</option>
+                            <option value="nj">NJ</option>
+                            <option value="other">All Others...</option>
+                        </select>
+                    </td>
+                    <td>Miles:</td>
+                    <td><input type="number" id="miles" onblur="updatemiles()"/></td>
+                </tr>
+            </table>
+            <table id="shortrategenerator">
+                <tr>
+                    <td>Year/Make/Model:</td>
+                    <td><input type="text" id="vehicle" onchange="updatemiles()"/></td>
+                    <td>Short Rated Driver:</td>
+                    <td><input type="text" id="shortrateddriver" placeholder="Name" onchange="updatemiles()"/></td>
+                </tr>
+                <tr>
+                    <td colspan="4">Lifestyle:
+                        <select id="lifestyle" onchange="updatemiles()">
+                            <option value="works close to home">Works close to home</option>
+                            <option value="works from home">Works from home</option>
+                            <option value="is a homemaker">Homemaker</option>
+                            <option value="is retired">Retired</option>
+                            <option value="has a company car or other primary mode of transporation">Has a company car or other...</option>
+                            <option value="stopped working to stay home with children">Stay home with children</option>
+                            <option value="uses public transportation to get to work">Public transportation to get to work</option>
+                            <option value="is deployed in the Military">Military (Deployed)</option>
+                            <option value="is out of country for over 6 months">Out of Country (over 6 months)</option>
+                            <option value="walks to work/school">Walks to work/school</option>
+                            <option value="rides a bike to work/school">Rides a bike to work/school</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div id="njref">
+                Refer to <a href="https://allstate.rightanswers.com/portal/app/portlets/results/viewsolution.jsp?solutionid=190415212741182&page=1&position=1&q=nj%20short%20rate">New Jersey New Business Short Rate Process</a>.
+            </div>
+        </div>
+        <textarea id="narrative"></textarea>
+    </div>
+    <div class="olmenu menu">
+      <div class="btn" onclick="copyNarrative()">Copy</div>
     </div>
   </div>
   <div id="aboutoverlay" class="overlay faster">
@@ -1094,13 +1301,15 @@
     <h2 class="oltitle">Changelog</h2>
     <textarea id="changelog" class="previewnote" readonly></textarea>
   </div>
+
   <div id="splash" class="splash faster">
       <img src="images/logo.png" class="splashimg"/>
       <h2 class="splashh2">Sales Note Tool</h2>
       <div class="loader"></div>
+      <div id="se" class="splasherror"></div>
   </div>
 
-<iframe id="hiddensnake" src="/snake.html">
+<iframe id="hiddensnake" src="eg/snake.html">
 </iframe>
 
 </body>

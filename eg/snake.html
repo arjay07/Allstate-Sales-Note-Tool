@@ -26,6 +26,7 @@
 <h2>Allstate Mayhem Snake</h2>
 <h3>How to Play:</h3>
 <p>Use the up, down, left, and right arrow keys to control the snake. Increase the length of the snake by collecting the white dots.</p>
+<h4>Score: <span id="score">0</span></h4>
 <canvas width="400" height="400" id="game"></canvas>
 <script>
 
@@ -39,6 +40,7 @@ function preventArrowKeys(e){
 window.addEventListener("keydown", preventArrowKeys, false);    
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
+var score = document.getElementById('score');
 
 var grid = 16;
 var count = 0;
@@ -71,6 +73,8 @@ function getRandomInt(min, max) {
 // game loop
 function loop() {
   requestAnimationFrame(loop);
+
+  if(score.innerHTML!=""+snake.cells.length-4)score.innerHTML=snake.cells.length-4;
 
   // slow game loop to 15 fps instead of 60 (60/15 = 4)
   if (++count < 4) {

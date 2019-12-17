@@ -4,6 +4,7 @@ html, body{
   margin: 0;
   padding: 0;
   background: #e5e5e5;
+  overflow-x: hidden;
 }
 
 body{
@@ -12,6 +13,35 @@ body{
 
 *:focus {
     outline-color: #0054A6;
+}
+
+#calcdraggable{
+    position: fixed;
+    top: 85px;
+    left: 280px;
+    background-color: #1d1d1d;
+    box-shadow: 0px 0px 5px black;
+}
+
+#calcbar{
+    height: 30px;
+    cursor: move;
+}
+
+#calcclose{
+    float: right;
+    color: #e5e5e5;
+    font-size: 20px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.splasherror{
+    position: absolute;
+    bottom: 10px;
+    color: red;
+    padding: 10px;
+    text-align: left;
 }
 
 .selecttabs{
@@ -35,7 +65,6 @@ body{
     box-shadow: -1px -2px 2px rgba(0,0,0,0.2);
 }
 
-
 .activeinline{
     display: inline-block;
 }
@@ -53,7 +82,7 @@ body{
     padding: 0;
     width: 100%;
     background: rgb(229,229,229);
-background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%);
+    background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%);
 }
 
 .quoteselect tr{
@@ -62,6 +91,19 @@ background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%
 
 .quoteselect td{
     margin: 0;
+}
+
+#shortrategenerator{
+    display: none;
+}
+
+#njref{
+    display: none;
+}
+
+#narrative{
+    width: 75%;
+    height: 200px;
 }
 
 #logtable{
@@ -79,7 +121,6 @@ background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%
     margin: auto;
     overflow: auto;
 }
-
 .tableclose{
     font-size: 25px;
     font-weight: bolder;
@@ -136,11 +177,12 @@ background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%
     padding-top: 65px;
     background-color: #1d1d1d;
     box-shadow: 2px 0px 10px #000;
+    box-sizing: border-box;
 
 }
 
 .drawercontents{
-    height: 100vh;
+    height: 100%;
     overflow-y: auto;
 }
 
@@ -218,6 +260,16 @@ background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%
 
 #changelog{
     font-family: courier, monospace;
+    margin: auto;
+    overflow: auto;
+}
+
+#narrativegenerator{
+    padding: 10px;
+    background-color: #e5e5e5;
+    text-align: left;
+    width: 85%;
+    height: 65%;
     margin: auto;
     overflow: auto;
 }
@@ -318,6 +370,8 @@ background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%
     cursor: pointer;
     border-radius: 5px;
     width: 350px;
+    -webkit-transition: border-radius 0.3s ease-out;
+    transition: border-radius 0.3s ease-out;
 }
 
 .filterbtn:hover{
@@ -343,31 +397,35 @@ background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%
     content: "\0fe3f";
 }
 
-#quotefilter{
+.quotefilter{
     margin: 0;
     padding: 0;
     list-style-type: none;
-    display: none;
     color: #e5e5e5;
     cursor: pointer;
     width: 380px;
+    display: none;
 }
 
-#quotefilter li{
+.quotefilter li{
     list-style-type: none;
     margin: 0 5px 0 5px;
     padding: 10px;
     background-color: #3b3b3b;
 }
 
-#quotefilter label{
+.quotefilter label{
     display: block;
     width: 100%;
     cursor: pointer;
 }
 
-#quotefilter li:hover{
+.quotefilter li:hover{
     background-color: #2e2e2e;
+}
+
+.quotefilteractive{
+    display: block;
 }
 
 .note{
@@ -415,7 +473,7 @@ background: linear-gradient(0deg, rgba(229,229,229,1) 4%, rgba(218,218,218,1) 4%
   background-color: #004395;
 }
 
-textarea, input{
+textarea, input, select, select option{
   font-family: 'Roboto', sans-serif;
   padding: 4px;
 }
