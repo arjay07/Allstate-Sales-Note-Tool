@@ -1,0 +1,56 @@
+.navbar, .drawer, .tab{
+    background-color: #ddd;
+    color: black;
+}
+
+.splash{
+    background-color: #ddd;
+}
+
+.tab{
+    border-color: #ccc;
+}
+
+.selectedtab{
+    background-color: #e5e5e5;
+    color: #0054A6;
+    border-top: 2px #0054A6 solid;
+    border-right: 2px #0054A6 solid;
+}
+
+.filterbtn{
+    background-color: #c4c4c4;
+    color: black;
+}
+
+.filterbtn:hover{
+    background-color: #cacaca;
+}
+
+.filterbtn:active{
+    background-color: #b5b5b5;
+}
+
+.quotefilter li{
+    list-style-type: none;
+    margin: 0 5px 0 5px;
+    padding: 10px;
+    background-color: #b7b7b7;
+    color: black;
+}
+
+.quotefilter li:hover{
+    background-color: #ccc;
+}
+
+.drawerlink{
+    color: black;
+}
+
+.drawerlink:hover{
+    background-color: #dbdbdb;
+}
+
+.drawerlink:active{
+    background-color: #ccc;
+}

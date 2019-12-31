@@ -15,12 +15,33 @@ body{
     outline-color: #0054A6;
 }
 
+input.break {
+    word-wrap: break-word;
+    word-break: break-all;
+    height: 80px;
+}
+
+.toast{
+    width: 200px;
+    height: auto;
+    position: fixed;
+    top:0;
+    left: calc(50% - 100px);
+    z-index: 99;
+    background-color: rgb(214, 221, 120);
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.75);
+    box-sizing: border-box;
+    padding: 10px;
+}
+
 #calcdraggable{
     position: fixed;
     top: 85px;
-    left: 280px;
+    left: 25%;
     background-color: #1d1d1d;
-    box-shadow: 0px 0px 5px black;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.75);
+    z-index: 2;
 }
 
 #calcbar{
@@ -106,6 +127,10 @@ body{
     height: 200px;
 }
 
+#callbackstable td{
+    padding: 5px;
+}
+
 #logtable{
     display: block;
     text-align: left;
@@ -141,6 +166,9 @@ body{
 }
 
 .loader {
+  border-width: 8px;
+  border-style: solid;
+  border-color: black;
   border: 8px solid rgb(0,0,0,0.75);
   border-radius: 56px;
   border-top: 8px solid #0054A6;
@@ -176,8 +204,9 @@ body{
     height: 100vh;
     padding-top: 65px;
     background-color: #1d1d1d;
-    box-shadow: 2px 0px 10px #000;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.75);
     box-sizing: border-box;
+    z-index: 2;
 
 }
 
@@ -199,6 +228,8 @@ body{
     text-align: center;
     background-color: #1d1d1d;
     color: #0054A6;
+    z-index: 3;
+    cursor: progress;
 }
 
 .splashimg{
@@ -219,6 +250,7 @@ body{
   height: 100vh;
   text-align: center;
   display: none;
+  z-index: 3;
 }
 
 .closebtn{
@@ -227,6 +259,21 @@ body{
   font-size: 50px;
   color: #fff;
   cursor: pointer;
+  line-height: 45px;
+}
+
+.sharebtn{
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    float: left;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.sharebtn img{
+    width: 25px;
+    height: 25px;
 }
 
 .oltitle{
@@ -246,6 +293,16 @@ body{
   left: 0;
   bottom: 0;
   width: 100%;
+}
+
+#overlaycontent{
+    padding: 10px;
+    text-align: left;
+    background-color: #e5e5e5;
+    width: 85%;
+    height: 65%;
+    margin: auto;
+    overflow: auto;
 }
 
 #about{
@@ -287,8 +344,9 @@ body{
   position: fixed;
   top: 0;
   left: 0;
-  box-shadow: 0px 0px 4px black;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.75);
   white-space: nowrap;
+  z-index: 2;
 }
 
 .icon{
@@ -356,6 +414,68 @@ body{
   padding: 10px;
   background-color: #e5e5e5;
 }
+
+#callstatus{
+    position: absolute;
+    top: 85px;
+    right: 10px;
+}
+
+#callstatus img{
+    width: 25px;
+}
+
+#disconnectedbtn, #ghostbtn, #clockbtn{
+    width: 25px;
+    height: 25px;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#disconnectedbtn{
+    background-color: #b30c00;
+}
+
+#ghostbtn{
+    background-color: #404040;
+}
+
+#clockbtn{
+    background-color: #0054A6;
+}
+
+#disconnectedbtn:hover{
+    background-color: #d10e00;
+}
+
+#ghostbtn:hover{
+    background-color: #484848;
+}
+
+#clockbtn:hover{
+    background-color: rgb(0, 96, 192);
+}
+
+#disconnectedbtn:active{
+    background-color: #8a0900;
+}
+
+#ghostbtn:active{
+    background-color: #2c2c2c;
+}
+
+#clockbtn:active{
+    background-color: rgb(0, 60, 121);
+}
+
+.timezone{
+    padding: 5px;
+    font-size: 15px;
+    font-family: 'Roboto Mono', monospace;
+}
+
 
 .filter{
     background-color: #dadada;
@@ -444,14 +564,6 @@ body{
     width: 100vw;
 }
 
-#freeform{
-  display: block;
-  width: 85%;
-  height: 200px;
-  padding: 2px;
-  margin: 10px;
-}
-
 .menu{
   padding: 5px;
   margin: auto;
@@ -495,6 +607,165 @@ td{
     padding-left: 10px;
 }
 
+a, a:visited{
+
+    text-decoration: none;
+
+}
+
+#whatsnewoverlay #overlaycontent{
+    font-size: 17px;
+    height: auto;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 99;
+}
+
+#ghostoverlay #overlaycontent{
+    font-size: 17px;
+    height: auto;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 99;
+    overflow-x: hidden;
+}
+
+#callbackoverlay #overlaycontent{
+    height: auto;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 99;
+    overflow-x: hidden;
+
+    transition: height 0.2s ease-in;
+    -webkit-transition: height 0.2s ease-in;
+}
+
+#ghostoverlay #control{
+    text-align: right;
+    display: block;
+}
+
+#ghostoverlay #scriptcontent{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    height: 200px;
+    vertical-align: middle;
+}
+
+#timerdiv{
+    position: relative;
+    display: none;
+    text-align: center;
+}
+
+#timerspinner {
+    position: absolute;
+    display: inline-block;;
+    border-width: 20px;
+    border-style: solid;
+    border-color: black;
+    border: 20px solid rgb(0,0,0,0.5);
+    border-radius: 150px;
+    border-top: 20px solid #0054A6;
+    width: 150px;
+    height: 150px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    margin: auto;
+    left:calc(50% - 85px);
+}
+
+#timerdisplay{
+    position: absolute;
+    display: inline-block;
+    margin: auto;
+    z-index: 1;
+    width: 185px;
+    height: 185px;
+    text-align: center;
+    line-height: 185px;
+    font-size: 50px;
+    left:calc(50% - 85px);
+}
+
+#scriptcontent p{
+    background-color: #fff;
+    color: black;
+    font-style: italic;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.freeform.fullnote{
+    width: 100vw;
+    height: calc(100vh - 131px);
+    position: fixed;
+    top: 65px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+}
+
+.freeform .menu{
+    display: none;
+}
+
+.freeform.fullnote .menu{
+    display: block;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+}
+
+.freeform #fullscreen{
+    display: block;
+    padding: 5px;
+    margin: 0;
+    width: 15px;
+    height: 15px;
+    margin-top: 10px;
+}
+
+.freeform img{
+    width: 15px;
+    height: 15px;
+}
+
+#freeform{
+  display: block;
+  width: 450px;
+  height: 200px;
+  padding: 2px;
+  margin: 10px;
+}
+
+.freeform.fullnote table,.freeform.fullnote caption,.freeform.fullnote tbody,.freeform.fullnote tfoot,.freeform.fullnote thead,.freeform.fullnote tr,.freeform.fullnote th,.freeform.fullnote td{
+    width: 100vw;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-width: 0;
+    border-collapse: collapse;
+}
+
+.freeform.fullnote #fullscreen{
+    display: none;
+}
+
+.freeform.fullnote #freeform{
+    width: 100vw;
+    height: 100%;
+    margin:0;
+    padding: 10px;
+    z-index: 1;
+    font-size: 15px;
+    box-sizing: content-box;
+}
+
 /* width */
 ::-webkit-scrollbar {
   width: 2px;
@@ -523,4 +794,12 @@ td{
     margin: auto;
     border: none;
     overflow: hidden;
+}
+
+img{
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }

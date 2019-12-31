@@ -1,0 +1,53 @@
+html, body{
+    background: rgb(46, 46, 46);
+    color: #e5e5e5;
+}
+.toast{
+    color: black;
+}
+
+.content, .note, .quoteselect, #quoteselect, .selectedtab, #customerinfo{
+    background-color: rgb(46, 46, 46);
+    color: #e5e5e5;
+}
+
+.quoteselect{
+    background: linear-gradient(0deg, rgb(46, 46, 46) 4%, rgb(39, 39, 39) 4%);
+}
+
+.menu{
+   background-color: rgb(39, 39, 39);
+}
+
+.selectedtab, .note{
+    background: rgb(46, 46, 46);
+}
+
+#overlaycontent, #about, #narrativegenerator, #logarea{
+    background: rgb(46, 46, 46);
+    color: #e5e5e5;
+}
+
+#scriptcontent p{
+    background-color: rgb(55, 55, 55);
+    color: #e5e5e5;
+    font-style: italic;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+select option{
+    color: black;
+}
+
+.tableclose{
+    color: #e5e5e5;
+}
+
+.datepicker-panel{
+    color: black;
+}
+
+.fa-bell{
+    color: #e5e5e5;
+}

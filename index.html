@@ -2,18 +2,37 @@
 <html>
 
 <head>
-	<title>Allstate Sales Note Tool</title>
+	<title>Allstate Sales Notebook</title>
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 	<link rel='icon' href='images/icon.ico' type='image/x-icon' />
-	<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat|Roboto|Roboto+Mono&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="default.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
-	<script src="script.js">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zebra_dialog@latest/dist/css/flat/zebra_dialog.min.css">
+	<link href="/lib/datepicker.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">
+	</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js">
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/zebra_dialog@latest/dist/zebra_dialog.min.js">
+	</script>
+	<script src="/lib/datepicker.js">
+
+	</script>
+	<script src="lib/luxon.js">
 
 	</script>
 	<script src="lib/zipcelx.js">
 
 	</script>
+    <script src="https://kit.fontawesome.com/bdac9266a3.js" crossorigin="anonymous"></script>
+	<script src="script.js">
+
+	</script>
+
 </head>
 
 <body>
@@ -27,23 +46,29 @@
 			<a class="drawerlink ieonly" href="https://oneview.allstate.com/wps/myportal/sas" target="_blank">1View</a>
 			<a class="drawerlink ieonly" href="https://oneview.allstate.com/CTIServer/CTIClientApp.jnlp" target="_blank">1View Telephony</a>
 			<a class="drawerlink" href="https://home.allstate.com/" target="_blank">AllConnect</a>
-			<a class="drawerlink ieonly" href="http://alliance/" target="_blank">Alliance</a>
-			<a class="drawerlink ieonly" href="http://dap/" target="_blank">DAP</a>
+			<a class="drawerlink" href="https://www.dmvlink.com/" target="_blank">CVR</a>
+            <a class="drawerlink ieonly" href="http://dap/" target="_blank">DAP</a>
 			<a class="drawerlink" href="https://allstate.rightanswers.com/portal/sa/" target="_blank">Right Answers</a>
 			<a class="drawerlink" href="https://agtacc.allstate.com/FIM/sps/successfactors_ag/saml20/logininitial?RequestBinding=HTTPPost&NameIdFormat=email&PartnerId=https://www.successfactors.com"
 			 target="_blank">Talent Connection</a>
 			<a class="drawerlink ieonly" href="https://entimpact360/wfo" target="_blank">Verint</a>
+			<a class="drawerlink" href="http://www.iihs-hldi.org/vinDirect.asp?ccr=WOA4G4K0K4H2" target="_blank">Vindicator</a>
 			<a class="drawerlink">
 				<h3>Tools</h3>
 			</a>
 			<a class="drawerlink" onclick="openBindLogView()">Bind Log</a>
 			<a class="drawerlink" onclick="openCalculator()">Calculator</a>
+			<a class="drawerlink chromeonly" onclick="openOverlay('callbacksviewoverlay');buildCallbacks()">Callbacks</a>
+			<a class="drawerlink chromeonly" onclick="openOverlay('clockoverlay')">Clock</a>
+			<a class="drawerlink" onclick="startGhostScript()">Ghost Call Script</a>
+			<a class="drawerlink" onclick="openOverlay('hitoolsoverlay')">Hawaii Tools</a>
 			<a class="drawerlink" onclick="openNarrative()">Narrative Generator</a>
 			<a class="drawerlink">
 				<h3>About</h3>
 			</a>
 			<a class="drawerlink" onclick="openContact()">Contact</a>
 			<a class="drawerlink" onclick="openChangelog()">Changelog</a>
+			<a class="drawerlink" onclick="openOverlay('settingsoverlay')">Settings</a>
 
 		</div>
 
@@ -51,7 +76,7 @@
 
 	<div class="navbar fast delay-2s">
 		<img src="images/menu.png" id="menuicon" class="menuicon" onclick="toggleDrawer()"/>
-		<img src="images/logo.png" class="icon" /><span class="title">Sales Note Tool</span>
+		<img src="images/logo.png" class="icon" /><span class="title">Sales Notebook</span>
         <img src="images/quickstart.png" id="quickstart" class="qsicon hidden" title="Quick Start" onclick="quickStart()"/>
     </div>
 
@@ -66,7 +91,7 @@
         </tr>
         <tr>
           <td>Phone #:</td>
-          <td><input id="customernumber" type="text" /></td>
+          <td><input id="customernumber" onblur="this.value=this.value.length==10?formatPhoneNumber(this.value):this.value" type="text" /></td>
           <td>Agent #: <input id="agent" type="text"/></td>
         </tr>
       </table>
@@ -74,7 +99,7 @@
         <tr>
           <td><label><input id="authenticate" type="checkbox" /> Authenticate</label></td>
           <td><label><input id="verify" type="checkbox" /> Verify</label></td>
-          <td>FACTA</td>
+          <td><span class="required">FACTA</span></td>
           <td>
             <select id="facta">
             <option value="">--</option>
@@ -84,6 +109,17 @@
           </td>
         </tr>
       </table>
+      <div id="callstatus">
+          <div title="Call was disconnected" id="disconnectedbtn" onclick="generateDisconnectedNote()">
+              <img src="images/disconnected.png"/>
+          </div>
+          <div title="Ghost Call Script" id="ghostbtn" onclick="startGhostScript()">
+              <img src="images/ghost.png"/>
+          </div>
+          <div class="chromeonly" title="Clock" id="clockbtn" onclick="openOverlay('clockoverlay')">
+              <img src="images/clock.png"/>
+          </div>
+      </div>
     </div>
 
     <table id="quoteselect" class="quoteselect">
@@ -128,7 +164,7 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
           <td>Declared Prior</td>
           <td>
             <select id="declaredprior">
@@ -158,7 +194,7 @@
         </tr>
         <tr>
           <td># of Vehicles</td>
-          <td><input id="vehicles" type="number"></td>
+          <td><input id="vehicles" onchange="addMileage(this)" type="number"></td>
         </tr>
       </table>
       <h3>Coverages</h3>
@@ -202,6 +238,7 @@
             <select id="decline">
             <option value="">--</option>
             <option value="not interested">Not interested</option>
+            <option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -266,7 +303,7 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
           <td>Declared Prior</td>
           <td>
             <select id="declaredprior">
@@ -296,7 +333,7 @@
         </tr>
         <tr>
           <td># of Vehicles</td>
-          <td><input id="vehicles" type="number"></td>
+          <td><input id="vehicles" onchange="addMileage(this)" type="number"></td>
         </tr>
       </table>
       <h3>Coverages</h3>
@@ -328,6 +365,7 @@
             <select id="decline">
             <option value="">--</option>
             <option value="not interested">Not interested</option>
+            <option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -392,7 +430,7 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
           <td>Declared Prior</td>
           <td>
             <select id="declaredprior">
@@ -422,7 +460,7 @@
         </tr>
         <tr>
           <td># of Vehicles</td>
-          <td><input id="vehicles" type="number"></td>
+          <td><input id="vehicles" onchange="addMileage(this)" type="number"></td>
         </tr>
       </table>
       <h3>Coverages</h3>
@@ -454,6 +492,7 @@
             <select id="decline">
             <option value="">--</option>
             <option value="not interested">Not interested</option>
+            <option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -518,7 +557,7 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
           <td>Declared Prior</td>
           <td>
             <select id="declaredprior">
@@ -548,7 +587,7 @@
         </tr>
         <tr>
           <td># of Vehicles</td>
-          <td><input id="vehicles" type="number"></td>
+          <td><input id="vehicles" onchange="addMileage(this)" type="number"></td>
         </tr>
       </table>
       <h3>Coverages</h3>
@@ -580,6 +619,7 @@
             <select id="decline">
             <option value="">--</option>
             <option value="not interested">Not interested</option>
+            <option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -644,9 +684,9 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
           <td>Closing Date</td>
-          <td><input id="closingdate" type="date" value="2019-01-01"></td>
+          <td><input id="closingdate" data-toggle="datepicker" value="2019-01-01"></td>
         </tr>
         <tr>
           <td>No Prior?</td>
@@ -682,6 +722,7 @@
             <select id="decline">
             <option value="">--</option>
             <option value="not interested">Not interested</option>
+            <option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -746,9 +787,9 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
           <td>Closing Date</td>
-          <td><input id="closingdate" type="date" value="2019-01-01"></td>
+          <td><input id="closingdate" data-toggle="datepicker" value="2019-01-01"></td>
         </tr>
         <tr>
           <td>No Prior?</td>
@@ -784,6 +825,7 @@
             <select id="decline">
             <option value="">--</option>
             <option value="not interested">Not interested</option>
+            <option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -815,7 +857,7 @@
           <td><textarea id="docsreceived"></textarea></td>
           <td class="required">Informed of T-Docs</td>
           <td>
-            <select>
+            <select id="informedoftdocs">
               <option value="">--</option>
               <option value="yes">Yes</option>
               <option value="no">No</option>
@@ -848,9 +890,9 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
           <td>Closing Date</td>
-          <td><input id="closingdate" type="date" value="2019-01-01"></td>
+          <td><input id="closingdate" data-toggle="datepicker" value="2019-01-01"></td>
         </tr>
         <tr>
           <td>No Prior?</td>
@@ -885,7 +927,7 @@
           <td>
             <select id="decline">
             <option value="">--</option>
-            <option value="not interested">Not interested</option>
+            <option value="not interested">Not interested</option>\n<option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -950,7 +992,7 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
           <td>Declared Prior</td>
           <td>
             <select id="declaredprior">
@@ -980,7 +1022,7 @@
         </tr>
         <tr>
           <td># of Vehicles</td>
-          <td><input id="vehicles" type="number"></td>
+          <td><input id="vehicles" onchange="addMileage(this)" type="number"></td>
         </tr>
       </table>
       <h3>Coverages</h3>
@@ -1016,6 +1058,7 @@
             <select id="decline">
             <option value="">--</option>
             <option value="not interested">Not interested</option>
+            <option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -1080,7 +1123,7 @@
         </tr>
         <tr>
           <td class="required">Effective Date</td>
-          <td><input id="effectivedate" type="date" value="2019-01-01"></td>
+          <td><input id="effectivedate" data-toggle="datepicker" value="2019-01-01"></td>
         </tr>
         <tr>
           <td class="required">PQB Modified?</td>
@@ -1136,6 +1179,7 @@
             <select id="decline">
             <option value="">--</option>
             <option value="not interested">Not interested</option>
+            <option value="wants callback">Wants callback</option>
             <option value="premium too high">Premium is too high</option>
             <option value="wants to think about it">Wants to think about it</option>
             <option value="wants to speak with spouse">Wants to speak with spouse</option>
@@ -1188,7 +1232,19 @@
     </div>
 
     <div class="freeform">
-      <textarea id="freeform" placeholder="Notes..."></textarea>
+      <table>
+          <tr>
+              <td id="texttd">
+                  <textarea id="freeform" placeholder="Notes..."></textarea>
+              </td>
+              <td valign="top">
+                <div class="btn" title="Fullscreen" onclick="toggleFullScreenNote()" id="fullscreen"><img src="images/fullscreen.png"/></div>
+              </td>
+          </tr>
+      </table>
+        <div class="olmenu menu">
+            <div class="btn" onclick="copyFreeform()">Copy</div> <div class="btn" onclick="toggleFullScreenNote()">Exit Fullscreen</div>
+        </div>
     </div>
     <div class="menu" onclick="doubleclick(this, function(){console.log('single click');}, toggleSnake)">
       <div class="btn" onclick="generateNote()">Generate</div>
@@ -1201,15 +1257,8 @@
         <iframe id="calculator" style="border: none" src="https://calculator-1.com/outdoor/?f=1d1d1d&r=0054A6" scrolling="no" width="219" height="302" frameborder="0"></iframe>
     </div>
 
-  <div id="overlay" class="overlay faster">
-    <div class="closebtn" onclick="closePreview()">&times;</div>
-    <h2 class="oltitle">Preview Notes</h2>
-    <textarea spellcheck="true" id="preview" class="previewnote"></textarea>
-    <div class="olmenu menu">
-      <div class="btn" onclick="copy()">Copy</div> <div class="btn" onclick="addToBindLog()">Add to Bind Log</div>
-    </div>
-  </div>
   <div id="bindlogoverlay" class="overlay faster">
+      <div class="sharebtn" title="Share" onclick="shareThis('bindlog')"/><img src="images/share.png"/></div>
     <div class="closebtn" onclick="closeBindLog()">&times;</div>
     <h2 class="oltitle">View/Edit Bind Log</h2>
     <div id="logarea">
@@ -1218,10 +1267,13 @@
     </div>
     <div class="olmenu menu">
       <div class="btn" onclick="saveEditedBindLog()">Save</div>
-      <div class="btn" onclick="downloadBindLog()">Download</div>
+      <div class="btn" onclick="importBindLog()">Import</div>
+      <div class="btn" onclick="exportBindLog()">Export</div>
+      <div class="btn chromeonly" onclick="downloadBindLog()">Download</div>
     </div>
   </div>
   <div id="narrativeoverlay" class="overlay faster">
+      <div class="sharebtn" title="Share" onclick="shareThis('narrativegenerator')"/><img src="images/share.png"/></div>
     <div class="closebtn" onclick="closeNarrative()">&times;</div>
     <h2 class="oltitle">Narrative Generator</h2>
     <div id="narrativegenerator">
@@ -1288,7 +1340,7 @@
     <div id="about">
         <div id="info">
             <img src="images/icon.ico"/>
-            <h2>Allstate Sales Note Tool</h2>
+            <h2>Allstate Sales Notebook</h2>
             <p>Created and designed by Leandro Yabut.</p>
             <h3>Contact</h3>
             <p>If you have any questions or suggestions, feel free to email me!</p>
@@ -1301,10 +1353,197 @@
     <h2 class="oltitle">Changelog</h2>
     <textarea id="changelog" class="previewnote" readonly></textarea>
   </div>
+  <div id="hitoolsoverlay" class="overlay faster">
+      <div class="sharebtn" title="Share" onclick="shareThis('hawaiitools')"/><img src="images/share.png"/></div>
+    <div class="closebtn" onclick="closeOverlay(this)">&times;</div>
+    <h2 class="oltitle">Hawaii Tools</h2>
+    <div id="overlaycontent">
+        <table>
+            <tr>
+                <td colspan="3"><a class="btn" href="https://www.courts.state.hi.us/legal_references/records/jims_system_availability" target="_blank">eCourt Kokua</a></td>
+            </tr>
+            <tr>
+                <td>Violation Code:</td>
+                <td><input type="text" id="violationCode" placeholder="HRS Code (without HRS)"/></td>
+                <td><div class="btn" onclick="getViolationCodes()">Search</div></td>
+            </tr>
+            <tr>
+                <td colspan="3"><h3>Allstate Codes</h3></td>
+            </tr>
+            <tr>
+                <td colspan="2"><h4>Description</h4></td>
+                <td><h4>Violation Code</h4></td>
+                <td><h4>MVR Reference Code</h4></td>
+            </tr>
+            <tr>
+                <td colspan="2" id="desc"></td>
+                <td id="vicode"></td>
+                <td id="refcode"></td>
+            </tr>
+        </table>
+    </div>
+  </div>
+
+  <div id="ghostoverlay" class="overlay faster">
+      <div class="sharebtn" title="Share" onclick="shareThis('ghostcall')"/><img src="images/share.png"/></div>
+    <div class="closebtn" onclick="closeOverlay(this);">&times;</div>
+    <h2 class="oltitle">Ghost Call Script</h2>
+    <div id="overlaycontent">
+        <div id="timerdiv">
+            <h2>Wait</h2>
+            <div id="timerspinner">
+            </div>
+            <div id="timerdisplay">
+                3
+            </div>
+        </div>
+        <div id="scriptcontent">
+        </div>
+        <div id="control">
+            <div class="btn" id="nextbtn" onclick="nextScript()">Next</div>
+        </div>
+    </div>
+  </div>
+
+  <div id="settingsoverlay" class="overlay faster">
+    <div class="closebtn" onclick="closeOverlay(this);saveSettings()">&times;</div>
+    <h2 class="oltitle">Settings</h2>
+    <div id="overlaycontent">
+        <table>
+            <tr>
+                <td><h3>General</h3></td>
+            </tr>
+            <tr>
+                <td>Theme:
+                    <select id="themeselect" onchange="loadTheme(this.options[this.selectedIndex].value)">
+                        <option value="default">Default</option>
+                        <option value="dark">Dark</option>
+                        <option value="darkwhitetext">Dark w/ White Textbox</option>
+                        <option value="light">Light</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Show IE Links (Requires restart)<input id="showielinks" onchange="setSetting('showIELinks', this.checked)" type="checkbox"/></label></td>
+            </tr>
+            <tr>
+                <td><label>Always Fullscreen Notes <input id="fullnotecheck" onchange="setAlwaysFullscreen(this.checked)" type="checkbox"/></label></td>
+            </tr>
+        </table>
+    </div>
+  </div>
+
+  <div id="clockoverlay" class="overlay faster">
+      <div class="sharebtn" title="Share" onclick="shareThis('clock')"/><img src="images/share.png"/></div>
+    <div class="closebtn" onclick="closeOverlay(this);">&times;</div>
+    <h2 class="oltitle">Clock</h2>
+    <div id="overlaycontent">
+        <table>
+            <tr>
+                <td><div class="btn" onclick="openOverlay('callbackoverlay', callbackOverlay)">Schedule Callback</div></td>
+                <td><div class="btn" onclick="openOverlay('callbacksviewoverlay');buildCallbacks()">View Callbacks</div></td>
+            </tr>
+            <tr>
+                <td><h3>Pacific</h3></td>
+                <td><p class="timezone" id="pacific" data-timezone="America/Los_Angeles">12:00:00</p></td>
+            </tr>
+            <tr>
+                <td><h3>Mountain</h3></td>
+                <td><p class="timezone" id="mountain" data-timezone="America/Denver">12:00:00</p></td>
+            </tr>
+            <tr>
+                <td><h3>Central</h3></td>
+                <td><p class="timezone" id="central" data-timezone="America/Chicago">12:00:00</p></td>
+            </tr>
+            <tr>
+                <td><h3>Eastern</h3></td>
+                <td><p class="timezone" id="eastern" data-timezone="America/New_York">12:00:00</p></td>
+            </tr>
+            <tr>
+                <td><h3>Alaska</h3></td>
+                <td><p class="timezone" id="eastern" data-timezone="America/Anchorage">12:00:00</p></td>
+            </tr>
+            <tr>
+                <td><h3>Hawaii</h3></td>
+                <td><p class="timezone" id="eastern" data-timezone="Pacific/Honolulu">12:00:00</p></td>
+            </tr>
+        </table>
+    </div>
+  </div>
+
+  <div id="whatsnewoverlay" class="overlay faster">
+      <div class="sharebtn" title="Share" onclick="shareThis('whatsnew')"/><img src="images/share.png"/></div>
+    <div class="closebtn" onclick="closeOverlay(this);">&times;</div>
+    <h2 class="oltitle">What's New?</h2>
+    <div id="overlaycontent">
+        <h3 id="version">Version</h3>
+        <ul>
+            <li>New Time Zone Clocks!</li>
+            <li>New Callback Reminder tools!</li>
+            <li>Import and Export your bind log to switch browsers easily!</li>
+            <li>Some alert windows have been revamped!</li>
+            <li>Some features have been removed from IE due to technical issues</li>
+        </ul>
+    </div>
+  </div>
+
+  <div id="callbacksviewoverlay" class="overlay faster">
+      <div class="sharebtn" title="Share" onclick="shareThis('callbacks')"/><img src="images/share.png"/></div>
+    <div class="closebtn" onclick="closeOverlay(this);">&times;</div>
+    <h2 class="oltitle">View/Edit Callbacks</h2>
+    <div id="overlaycontent">
+        <table id="callbackstable">
+        </table>
+        <div class="btn" onclick="openOverlay('callbackoverlay', callbackOverlay)">Schedule Callback</div>
+    </div>
+  </div>
+
+  <div id="callbackoverlay" class="overlay faster">
+      <div class="sharebtn" title="Share" onclick="shareThis('callback')"/><img src="images/share.png"/></div>
+    <div class="closebtn" onclick="closeOverlay(this);">&times;</div>
+    <h2 class="oltitle">Schedule Callback</h2>
+    <div id="overlaycontent">
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td><input type="text" id="callbackname"/></td>
+                <td>Number:</td>
+                <td><input type="text" onblur="this.value=this.value.length==10?formatPhoneNumber(this.value):this.value" id="callbacknumber"/></td>
+            </tr>
+            <tr>
+                <td>Date:</td>
+                <td><input data-toggle="datepicker" id="callbackdate"/></td>
+                <td>Time:</td>
+                <td><input data-toggle="timepicker" id="callbacktime"/></td>
+            </tr>
+            <tr>
+                <td>Reminder:</td>
+                <td>
+                    <select id="callbackreminder">
+                        <option value="5">5 Minutes</option>
+                        <option value="15">15 Minutes</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="60">1 Hour</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <div class="btn" onclick="scheduleCallback()">Create</div>
+    </div>
+  </div>
+
+  <div id="overlay" class="overlay faster">
+    <div class="closebtn" onclick="closePreview()">&times;</div>
+    <h2 class="oltitle">Preview Notes</h2>
+    <textarea spellcheck="true" id="preview" class="previewnote"></textarea>
+    <div class="olmenu menu">
+      <div class="btn" onclick="copy()">Copy</div> <div class="btn" onclick="addToBindLog()">Add to Bind Log</div>
+    </div>
+  </div>
 
   <div id="splash" class="splash faster">
       <img src="images/logo.png" class="splashimg"/>
-      <h2 class="splashh2">Sales Note Tool</h2>
+      <h2 class="splashh2">Sales Notebook</h2>
       <div class="loader"></div>
       <div id="se" class="splasherror"></div>
   </div>

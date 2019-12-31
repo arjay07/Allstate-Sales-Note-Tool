@@ -1,8 +1,50 @@
 Allstate Sales Note Tool
 Changelog
 
+12/27/2019
+Version 1.6
+- Fixed bug for settings not being kept
+- Added new dialogs and datepickers
+- Added new Clock
+- Added new Callback Reminder Tool
+- Some features have been removed from IE due to technical issues
+
+12/24/2019
+Version 1.5.2
+- Attempt to add to bind log only when a control number is present
+- Added export and import bind log
+- Removed Clock and Download bind log from IE
+
+12/23/2018
+Version 1.5.1
+- Added floating message to replace some alert windows
+- Added fullscreen note
+- Added new themes
+- Added a settings menu
+
+12/21/2019
+Version 1.5
+- Minor bug fixes
+- Fixed multiple notes being generated when multiple tabs are opened
+- Notes will only generate when a control number is entered
+- Added Disconnected Call Note Generator Button
+- Added Ghost Script Tool
+- Added shareable tool links
+- FACTA is now a required field
+- Informed of T-DOCS is YES by default
+- Optimized some image sizes
+
+12/18/2019
+Version 1.4.3
+- Fixed loader in IE
+- Added Hawaii Tools
+- Added What's New window
+- Add to Bind Log with multiple tabs updated
+
 12/17/2019
 Version 1.4.2
+- Minor bug fixes
+- Optimized note generation
 - Added Calculator to Tools
 - Added Motor Home Notes Tab
 - Start up errors now show on loading screen
